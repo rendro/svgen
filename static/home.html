@@ -21,6 +21,9 @@
         width: 100px;
         height: 100px;
         background-size: 100px 100px;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        border: 1px solid #c0c0c0;
       }
     </style>
   </head>
@@ -28,6 +31,37 @@
     <div class="container">
       <h1>SVG Spin Generator Web Service</h1>
       <div class="spin"></div>
+      <div class="fr">
+      <label for="type">Type:</label></div>
+
+      <div class="fr">
+        <label for="color">Color:</label>
+        <input type="color" name="color">
+      </div>
+      <div class="fr">
+        <label for="dots">Number of dots:</label>
+        <input type="number" name="dots">
+      </div>
+      <div class="fr">
+        <label for="dotSize">Size of a dot:</label>
+        <input type="number" name="dotSize">
+      </div>
+      <div class="fr">
+        <label for="radius">Radius:</label>
+        <input type="number" name="radius">
+      </div>
+      <div class="fr">
+        <label for="duration">Duration (in sec):</label>
+        <input type="number" name="duration">
+      </div>
+      <div class="fr">
+        <label for="minOpacity">Minimum Opacity:</label>
+        <input type="number" name="minOpacity">
+      </div>
+      <div class="fr">
+        <label for="maxOpacity">Maximum Opacity:</label>
+        <input type="number" name="maxOpacity">
+      </div>
     </div>
   </body>
 </html>
