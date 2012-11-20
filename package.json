@@ -1,0 +1,20 @@
+{
+  "name": "spinner-app",
+  "version": "0.0.1",
+  "author": "Robert Fleischmann <robert.fleischmann@sinnerschrader.com>",
+  "description": "web service to generate svg spinner",
+  "contributors": [
+    {
+      "name": "Robert Fleischmann",
+      "email": "robert.fleischmann@sinnerschrader.com"
+    }
+  ],
+  "dependencies" : {
+    "express": "3.0.x",
+    "coffee-script": "1.4.x"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
+}
