@@ -9,59 +9,173 @@
         font: 14px/1.4 "Lucida Grande", "Arial", "Helvetica", sans-serif;
         text-align: center;
       }
-      a {
-        color: #be2221;
-      }
+      a { color: #be2221; }
       .container {
         width: 500px;
         margin: 50px auto;
       }
       .spin {
-        margin: auto;
+        margin: 50px auto;
         width: 100px;
         height: 100px;
-        background-size: 100px 100px;
         background-repeat: no-repeat;
         background-position: 50% 50%;
         border: 1px solid #c0c0c0;
+        transition: height 0.15s ease-in-out, width 0.15s ease-in-out;
+        -webkit-transition: height 0.15s ease-in-out, width 0.15s ease-in-out;
+      }
+      .spin-url {
+        font-family: monospace;
+        margin-bottom: 50px;
+        border-bottom: 1px dotted #c0c0c0;
+        font-size: 0.9em;
+      }
+      .fr { margin-bottom: 10px; }
+      label {
+        display: inline-block;
+        vertical-align: middle;
+        width: 140px;
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+        padding-right: 10px;
+      }
+      input,
+      select {
+        display: inline-block;
+        vertical-align: middle;
+        width: 150px;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        outline: none;
+      }
+      input[type=number] {
+        border: 1px solid #c0c0c0;
+        padding: 5px 10px;
+        height: 25px;
+        transition: border-color 0.3s ease-in-out;
+        -webkit-transition: border-color 0.3s ease-in-out;
+      }
+      input:focus { border-color: #444; }
+      .hide { display: none; }
+
+      @media screen and (max-width: 500px) {
+        .container {
+          width: 100%;
+        }
+        label, input, select {
+          width: 100%;
+          text-align: left;
+          display: block;
+        }
+        .spin-url {
+          font-size: 0.8em;
+          overflow: scroll;
+          -webkit-overflow-scrolling: touch;
+          width: 100%;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>SVG Spin Generator Web Service</h1>
-      <div class="spin"></div>
-      <div class="fr">
-      <label for="type">Type:</label></div>
-
-      <div class="fr">
-        <label for="color">Color:</label>
-        <input type="color" name="color">
-      </div>
-      <div class="fr">
-        <label for="dots">Number of dots:</label>
-        <input type="number" name="dots">
-      </div>
-      <div class="fr">
-        <label for="dotSize">Size of a dot:</label>
-        <input type="number" name="dotSize">
-      </div>
-      <div class="fr">
-        <label for="radius">Radius:</label>
-        <input type="number" name="radius">
-      </div>
-      <div class="fr">
-        <label for="duration">Duration (in sec):</label>
-        <input type="number" name="duration">
-      </div>
-      <div class="fr">
-        <label for="minOpacity">Minimum Opacity:</label>
-        <input type="number" name="minOpacity">
-      </div>
-      <div class="fr">
-        <label for="maxOpacity">Maximum Opacity:</label>
-        <input type="number" name="maxOpacity">
-      </div>
+      <h1>SVG Spin Generator</h1>
+      <div class="spin" style="background-image:url('http://localhost:5000/fade/');"></div>
+      <div class="spin-url">http://localhost:5000/fade/</div>
+      <form>
+        <div class="fr">
+          <label for="type">Type:</label>
+          <select name="type" id="type">
+            <option value="fade" selected>Fade</option>
+            <option value="rotate" data-hide="minOpacity maxOpacity">Rotate</option>
+          </select>
+        </div>
+        <div class="fr">
+          <label for="color">Color:</label>
+          <input type="color" name="color" id="color" value="#000000"/>
+        </div>
+        <div class="fr">
+          <label for="dots">Number of dots:</label>
+          <input type="number" name="dots" id="dots" value="12" min="1"/>
+        </div>
+        <div class="fr">
+          <label for="dotSize">Size of a dot:</label>
+          <input type="number" name="dotSize" id="dotSize" value="2" min="0" step="0.1"/>
+        </div>
+        <div class="fr">
+          <label for="radius">Radius:</label>
+          <input type="number" name="radius" id="radius" value="10" min="0" step="1"/>
+        </div>
+        <div class="fr">
+          <label for="duration">Duration (in sec):</label>
+          <input type="number" name="duration" id="duration" value="1" min="0.1" step="0.1"/>
+        </div>
+        <div class="fr">
+          <label for="minOpacity">Minimum Opacity:</label>
+          <input type="number" name="minOpacity" id="minOpacity" value="0.3" min="0" max="1" step="0.1"/>
+        </div>
+        <div class="fr">
+          <label for="maxOpacity">Maximum Opacity:</label>
+          <input type="number" name="maxOpacity" id="maxOpacity" value="1" min="0" max="1" step="0.1"/>
+        </div>
+      </form>
     </div>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script>
+      var spin    = $('.spin')
+        , spinUrl = $('.spin-url')
+        , form    = $('form')
+        , select  = $('select')
+        , hidden
+        , getValues = window.getValues = function () {
+            return form.serializeArray().filter(function(itm) {
+              return (hidden || '').indexOf(itm.name) === -1
+            }).map(function(itm) {
+              if (itm.name == 'color')
+                return itm.value.substr(1)
+              return itm.value;
+            });
+          }
+        , checkFormFields = function() {
+            form.find('.fr.hide').removeClass('hide');
+            if ((hidden = select.find('option:selected').data('hide')) !== undefined) {
+              hidden.split(' ').forEach(function(el) {
+                form.find(['input[name="', el, '"]'].join('')).closest('.fr').addClass('hide');
+              });
+            }
+          }
+        , updateSVG = function() {
+            var values, size, url;
+
+            values = getValues();
+
+            if ((size = (parseInt(values[3],10)+parseInt(values[4],10))*2) > 100)
+              size += 20;
+            else
+              size = 100;
+            spin.css({ width: size, height: size });
+
+            window.location.hash = values.join('/');
+            url = ['http://localhost:5000/', values.join('/'),].join('');
+            spinUrl.text(url);
+            spin.css('background-image', ['url("', url, '")'].join(''));
+          }
+        ;
+
+      form.on('change', 'select', checkFormFields)
+          .on('change', 'select, input', updateSVG);
+
+      if (window.location.hash) {
+        var inputs = form.find('select, input');
+        window.location.hash.substr(1).split('/').forEach(function(value, idx) {
+          if (idx == 1)
+            value = ['#', value].join('');
+          $(inputs[idx]).val(value);
+        });
+        checkFormFields();
+        updateSVG();
+      }
+
+    </script>
   </body>
 </html>

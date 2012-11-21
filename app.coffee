@@ -113,7 +113,10 @@ app.configure ->
   app.set 'title', 'SVG Spin Generator'
   return
 
-app.get '/:type?/:color?/:dots?/:dotSize?/:radius?/:duration?/:minOpacity?/:maxOpacity?', (req, res) ->
+app.get '/', (req, res) ->
+  res.sendfile(__dirname + '/static/home.html')
+
+app.get '/:type/:color?/:dots?/:dotSize?/:radius?/:duration?/:minOpacity?/:maxOpacity?', (req, res) ->
 
   options =
     type: req.params.type or 'fade'
