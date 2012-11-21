@@ -81,7 +81,7 @@
     <div class="container">
       <h1>SVG Spin Generator</h1>
       <div class="spin" style="background-image:url('/fade/');"></div>
-      <div class="spin-url">http://localhost:5000/fade/</div>
+      <div class="spin-url"></div>
       <form>
         <div class="fr">
           <label for="type">Type:</label>
@@ -173,9 +173,9 @@
             value = ['#', value].join('');
           $(inputs[idx]).val(value);
         });
-        checkFormFields();
-        updateSVG();
       }
+      checkFormFields();
+      updateSVG();
 
     </script>
   </body>
