@@ -9,7 +9,16 @@
         font: 14px/1.4 "Lucida Grande", "Arial", "Helvetica", sans-serif;
         text-align: center;
       }
-      a { color: #be2221; }
+      a {
+        color: #be2221;
+        font-size: 0.8em;
+        text-decoration: none;
+        transition: color 0.3s ease-in-out;
+        -webkit-transition: color 0.3s ease-in-out;
+      }
+      a:hover {
+        color: #1e1e1e;
+      }
       .container {
         width: 500px;
         margin: 50px auto;
@@ -29,6 +38,9 @@
         margin-bottom: 50px;
         border-bottom: 1px dotted #c0c0c0;
         font-size: 0.9em;
+      }
+      form {
+        margin-bottom: 50px;
       }
       .fr { margin-bottom: 10px; }
       label {
@@ -119,6 +131,7 @@
           <input type="number" name="maxOpacity" id="maxOpacity" value="1" min="0" max="1" step="0.1"/>
         </div>
       </form>
+      <a href="https://github.com/rendro/svgen">See this project on github: rendro/svgen</a>
     </div>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script>
