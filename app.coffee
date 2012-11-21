@@ -48,11 +48,13 @@ class SVG
   constructor: (options) ->
     @options = options
 
+    @size = (@options.dotSize+@options.radius) * 2
+
     @svgElement = new Node('svg', {
       xmlns: "http://www.w3.org/2000/svg"
       version: 1.1
-      width: [(@options.dotSize+@options.radius)*2, "px"].join("")
-      height: [(@options.dotSize+@options.radius)*2, "px"].join("")
+      width: [@size, "px"].join("")
+      height: [@size, "px"].join("")
     })
 
   generateCircleDot: (i) ->
@@ -98,7 +100,7 @@ class Rotate extends SVG
   render: ->
     style = new ContentNode("style")
         .content("@keyframes rotate{0%{transform:rotate(0deg)}to{transform:rotate(360deg)}}@-webkit-keyframes rotate{0%{-webkit-transform:rotate(0deg)}to{-webkit-transform:rotate(360deg);}}")
-        .append("g{animation:rotate #{@options.duration}s infinite linear;-webkit-animation:rotate #{@options.duration}s infinite linear;transform-origin:50% 50%;-webkit-transform-origin:50% 50%;}")
+        .append("g{animation:rotate #{@options.duration}s infinite linear;-webkit-animation:rotate #{@options.duration}s infinite linear;transform-origin:#{@size/2}px #{@size/2}px;-webkit-transform-origin:#{@size/2}px #{@size/2}px;}")
     style.append("circle{fill:##{@options.color};}") if @options.color
     @svgElement.addChild(style)
     group = new Node("g")
