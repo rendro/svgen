@@ -80,7 +80,7 @@
   <body>
     <div class="container">
       <h1>SVG Spin Generator</h1>
-      <div class="spin" style="background-image:url('http://localhost:5000/fade/');"></div>
+      <div class="spin" style="background-image:url('/fade/');"></div>
       <div class="spin-url">http://localhost:5000/fade/</div>
       <form>
         <div class="fr">
@@ -120,14 +120,15 @@
         </div>
       </form>
     </div>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script>
-      var spin    = $('.spin')
+      var siteURL = [location.protocol, '//', location.hostname, (location.port ? [':', location.port, '/'].join('') : '/')].join('')
+        , spin    = $('.spin')
         , spinUrl = $('.spin-url')
         , form    = $('form')
         , select  = $('select')
         , hidden
-        , getValues = window.getValues = function () {
+        , getValues = function () {
             return form.serializeArray().filter(function(itm) {
               return (hidden || '').indexOf(itm.name) === -1
             }).map(function(itm) {
@@ -156,7 +157,7 @@
             spin.css({ width: size, height: size });
 
             window.location.hash = values.join('/');
-            url = ['http://localhost:5000/', values.join('/'),].join('');
+            url = [siteURL, values.join('/'),].join('');
             spinUrl.text(url);
             spin.css('background-image', ['url("', url, '")'].join(''));
           }
